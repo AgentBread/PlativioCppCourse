@@ -6,7 +6,5 @@
 #define MIN_VALUE 1
 #define MAX_VALUE 4999
 
-std::string numerals(int number, std::string low, std::string mid, std::string high);
-void build(int number);
 
 #endif

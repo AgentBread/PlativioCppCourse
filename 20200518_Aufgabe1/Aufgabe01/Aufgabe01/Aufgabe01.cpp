@@ -1,58 +1,73 @@
-// Aufgabe01.cpp : Defines the entry point for the console application.
-// Arabische Zahlen in römische Zahlen umwandeln, von 1 bis 2999
-
-//#include "stdafx.h" 
-//#include <limits>
+/*
+** ----------------------------------------------------------------------------
+** Filename: Aufgabe01.cpp
+** Version: 0
+** Revision: 1
+** Release: 2020-05-20
+** Author: Stephanie Walcher <mail>
+** ----------------------------------------------------------------------------
+** includes:
+** ----------------------------------------------------------------------------
+*/
+#include <cstdlib>
 #include <iostream>
-#include "Aufgabe01.h"
+#include <string>
+/*
+** ----------------------------------------------------------------------------
+** defines:
+** ----------------------------------------------------------------------------
+*/
+using namespace std;
+#define MIN_VALUE 1
+#define MAX_VALUE 4999
 
-int main()
-{
-	// ask for user input, cast to int number
-	std::cout << "Please enter integer between " << MIN_VALUE << " and " << MAX_VALUE << ": ";
-	int number{};
-	std::cin >> number;
-
-	build(number);
-
-
-	//std::cin.clear(); // reset any error flags
-	//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore any characters in the input buffer until we find a newline
-	//std::cin.get(); // get one more char from the user
-	return 0;
-}
-
-//takes user input and hard-coded letters from low to high to form roman numeral
-std::string numerals(int number, std::string low, std::string mid, std::string high) 
-{
-	if (number < 4 || mid == "" || high == "") //amalgamated if-loop for digit < 4 and for thousand-digit (low=M and mid/high empty) up to 4999
-		return std::string(number, low[0]); //string-function returns number * 1st letter of string low 
-	else if (number == 4)
-		return low + mid;
-	else if (number == 5)
-		return mid;
-	else if (number < 9) //implies number > 5
-		return mid + std::string(number % 5, low[0]);
-	else if (number == 9)
-		return low + high;
-	return "";
-}
-
- void build(int number) //constructs roman numerals; calls numerals() for input
-{
-	 // deconstruct digits 
-	 int t{ number % 10000 / 1000 }; //int automatically drops numbers behind comma in C++
-	 int h{ number % 1000 / 100 };   
-	 int te{ number % 100 / 10 };
-	 int o{ number % 10 / 1 };
-
-	// build roman numerals
-	std::string thous{ numerals(t, "M", "", "") }; //numeral for thousand-digit, M = 1000
-	std::string hunds{ numerals(h, "C", "D", "M") }; //numeral for hundred-digit, C = 100, D = 500
-	std::string tens{ numerals(te, "X", "L", "C") }; //numeral for ten-digit, X = 10, L = 50
-	std::string ones{ numerals(o, "I", "V", "X") }; //numeral for one-digit, I = 1, V = 5
-
-	std::cout << thous << hunds << tens << ones << '\n'; 
-
-	return;
+/*
+** ----------------------------------------------------------------------------
+** global variables:
+** ----------------------------------------------------------------------------
+** 
+** ----------------------------------------------------------------------------
+** forward declarations:
+** ----------------------------------------------------------------------------
+*/
+void printroem( int ) ;
+/*
+** ----------------------------------------------------------------------------
+** usage:
+** Arabische in Roemische Zahlen umwandeln: 1 bis 3999
+** ----------------------------------------------------------------------------
+ ** "main"
+ ** parameters:
+ **  none
+** returns:
+ ** 0 = ok 1 = error
+ ** ---------------------------------------------------------------------------
+ ** remarks:
+ ** ----------------------------------------------------------------------------
+*/
+int main( void ){
+	//ask for user input, cast to int number
+	std::cout << "Please enter integer between " << MIN_VALUE << " and " << MAX_VALUE << ": " ;
+	int number = 0 ;
+	std::cin >> number ;
+	if (number >= MIN_VALUE && number <= MAX_VALUE) {
+		printroem( number ) ;
+		}
+	//cstdlib::sytem( pause ) ;
+	return 0 ;
+	}
+//convert to roman
+void printroem( int num ) {
+	string rom[ ] = { "I" , "IV", "V" , "IX" , "X" , "XL" , "L" , "XC" , "C" , "CD" ,  "D" , "CM" , "M" } ;
+	int ara[ ] = { 1 , 4 , 5 , 9 , 10 , 40 , 50 , 90 , 100 , 400 , 500 , 900 , 1000 } ;
+	int c = 12 ;
+	while ( num > 0 ) {
+		if ( num >= ara[ c ] ) {
+			cout << rom[ c ] ;
+			num = num - ara[ c ] ;
+		}
+		else {
+			c--;
+		}
+	}
 }

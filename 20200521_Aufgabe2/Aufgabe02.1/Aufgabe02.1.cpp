@@ -9,6 +9,9 @@
 */
 #include <iostream>
 #include <string>
+#include <iterator>
+#include <map>
+#include <sstream>
 #include <regex>
 /*
 ** ----------------------------------------------------------------------------
@@ -26,8 +29,9 @@ using namespace std;
 ** ----------------------------------------------------------------------------
 ** forward declarations:
 */
-void printara( string , string [ ] , int[ ] ) ;
+int printara( string , string [ ] , int[ ] ) ;
 void printroem( int ) ;
+int repetitions ( string , int , int ) ;
 /*
 ** ----------------------------------------------------------------------------
 ** usage:
@@ -50,69 +54,73 @@ int main( void ) {
 	int ara[ ] = { 1 , 4 , 5 , 9 , 10 , 40 , 50 , 90 , 100 , 400 , 500 , 900 , 1000 } ;
 	cout << "Please enter roman rumeral between " << MIN_VALUE << " and " << MAX_VALUE << endl << "or enter integer between " << MIN_VALUE_ARA << " and " << MAX_VALUE_ARA << ": " ; 
 	cin >> numeral ;
-	string str ;				//1-2 letters in input
-	int lastpos = 12 ;	//to prevent that currpos > lastpos in 1st iteration
-	int currpos = 0 ;		//pos in rom of current match
-	int rep = 1 ;				//repetition of the same element in rom
-	int x = 0 ;					//x iterates through input
-	bool valid = true ; //true = valid input
-	do {
-		bool found = false ; 
-		if ( lastpos == currpos ) {
-			rep++ ;
-			}
-		else {
-			rep = 1 ;
-			}
-		if ( x + 1  < numeral.length( ) ) {
-			str = string( 1 , numeral[ x ] ) + string( 1 , numeral[ x + 1 ] ) ;
-			if ( str[ 0 ] == str[ 1 ] ) {
-				rep++ ;
-				x++ ;
-				} 
-			for ( int j = 0 ; j < 13 ; j++ ) {
-				if ( rom[ j ] == str ) {
-					currpos = j ;
-					valid = currpos <= lastpos ; //invalid for current match > last match
-					found = true ;
-					break ;
-					}
-				}
-				if ( found ) { 
-					valid = valid && rep < 4 ;
-					lastpos = currpos ;
-					++x ;
-					continue ; //if match found for 2 letters jump to next letters in numeral
-					}
-			}
-		str = string( 1 , numeral[ x ] ) ;
-		for ( int k = 0 ; k < 13 ; k++ ) { 
-			if ( rom [ k ] == str ) {	//match found for 1 letter
-				if ( k + 2 < 13 ) {			//k + 2 = next higher round number
-					valid = ara[ k ] * rep < ara[ k + 2 ] ; 
-					}
-				currpos = k ;
-				valid = valid && currpos <= lastpos ;
-				found = true ;
-				break ;
-				}
-			}
-		valid = valid && found && rep < 4 ;
-		lastpos = currpos ;
-		++x ;
-	} while ( valid && x < numeral.length ( ) ) ;
-	if ( valid ) {
-		printara( numeral , rom, ara ) ;
-		return 0 ;
+	int p = 12 ; //point to last element = "M", reduce to 0 under conditions
+	int x = 0 ; //point to string input
+	int c = 0 ; //counter for recurrance
+	int a = 0 ; //output
+	string str = numeral.substr ( x , 1 ) ;
+	while( str == rom[ p ] && a >= 0 ) { //while eg "M" found
+		c++ ;
+		x++ ;
+		a += ara[ p ] ;
+		a = repetitions ( str , c , a ) ;
+		str = numeral.substr ( x , 1 ) ;
 		}
-/*
+	bool valid = a >= 0 ;
+	while ( valid ) {
+		c = 0 ;
+		p-- ;
+		bool found = false ;
+		str = numeral.substr( x , 2 ) ;
+		if ( str == rom[ p ] || str == rom[ p - 2 ]) {
+			while ( (str == rom[ p ] || str == rom[ p - 2 ] ) && a >= 0 ) {
+				a += ara[ str == rom[ p - 2 ] ? p - 2 : p ] ;
+				a = repetitions ( str , c , a ) ;
+				p -= 3 ;
+				x += 2 ;
+				found = true ;
+				}
+			c = 0 ;
+		}
+		if ( !found ) {
+			str = numeral.substr ( x , 1 ) ;
+			if ( str == rom[ p - 1 ] ) {
+				while ( str == rom [ p - 1 ] && a >= 0) {
+					c++ ;
+					a += ara[ p - 1 ] ;
+					a = repetitions ( str , c , a ) ;
+					x++ ;
+					found = true ;
+				}
+			}
+			if ( x < numeral.length( ) ) {
+				str = numeral.substr ( x , 1 ) ;
+				if ( str == rom[ p - 3 ] ) {
+					while ( str == rom[ p - 3 ] && a >= 0 ) {
+						c++ ;
+						a += ara[ p - 3 ] ;
+						a = repetitions ( str , c , a ) ;
+						x++ ;
+						found = true ;
+					}
+				}
+				if ( !found ) {
+					valid = p > 0 ;
+				}
+				valid = valid && x < numeral.size( ) && a >= 0 ;
+				p -= 4 ;
+				c = 0 ;
+			}
+		}
+	}
+	/*
 	if ( regex_match( numeral , regex( "^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$") ) ) { //if statement for rom-to-ara conversion
 		printara( numeral , rom[ ] , ara[ ] ) ;
 		return 0 ;
 		}
 */
 //control statement to catch false input: if no mismatch is found, the function returns string::npos.
-	else if ( numeral.find_first_not_of( "0123456789" ) != string::npos ) { 
+	 if ( numeral.find_first_not_of( "0123456789" ) != string::npos && a <= 0 ) { 
 		cout << "Invalid Input " << endl ;
 		return 0 ;
 		}
@@ -120,10 +128,27 @@ int main( void ) {
 	if (num >= MIN_VALUE_ARA && num <= MAX_VALUE_ARA ) {
 		printroem( num ) ;
 		}
+	else {
+		cout << "Invalid Input " << endl ;
+		}
 	return 0 ;
 	}
-//convert to roman
-void printara( string numeral , string rom[ ] , int ara[ ] ) {
+//within validation of input: check repetition of letters
+int repetitions ( string str , int c , int a) {
+	if ( str == "M" | str == "C" | str == "X" | str == "I" ) {
+		if ( c > 3 ) {
+			a = -1 ;
+			}
+		}
+	else if ( str == "IV" | str == "V" | str == "IX" | str == "XL" | str == "L" | str == "XC" | str == "CD" | str == "D" | str == "CM" ) {
+		if ( c > 1 ) {
+			a = -1 ;
+			}
+		}
+	return a ;
+	}
+//convert to arabic
+int printara( string numeral , string rom[ ] , int ara[ ] ) {
 	int output = 0 ;
 	int nl = numeral.length( ) ;
 	int c = 13 ;
@@ -152,7 +177,7 @@ void printara( string numeral , string rom[ ] , int ara[ ] ) {
 				}
 			}
 		}
-cout << output ;
+	return output ;
 }
 //convert to roman
 void printroem( int num ) {

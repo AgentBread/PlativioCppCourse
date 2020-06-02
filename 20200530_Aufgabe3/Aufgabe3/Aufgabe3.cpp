@@ -1,8 +1,8 @@
 /* ----------------------------------------------------------------------------
 ** Filename: Aufgabe3.cpp
 ** Version: 0
-** Revision: 1
-** Release: 2020-06-01
+** Revision: 2
+** Release: 2020-06-02
 ** Author: Stephanie Walcher <mail>
 ** ----------------------------------------------------------------------------
 ** includes:
@@ -17,9 +17,7 @@
 ** defines:
 */
 using namespace std ;
-//#ifdef _MSC_VER
 //#define _CRT_SECURE_NO_WARNINGS 1 
-//#endif
 /*
 ** ----------------------------------------------------------------------------
 ** global variables:
@@ -27,7 +25,8 @@ using namespace std ;
 ** ----------------------------------------------------------------------------
 ** forward declarations:
 */
-void bubblesort( int , char*[ ] ) ;
+void bubblesort_za( int , char*[ ] ) ;
+void bubblesort_az( int  , char *[ ] ) ;
 /*
 ** ----------------------------------------------------------------------------
 ** usage:
@@ -41,19 +40,29 @@ void bubblesort( int , char*[ ] ) ;
 ** remarks:
 ** none
 */
-int main ( void ) {
+int main( int argc , char* argv [ ] ) {  //dateiname + Eingabe + Aufsgabe Datei + optionaler param to sort a-z or z-a + 0 = 5 args
 	int n = 0 ; //Anzahl der Strings 
-  int i ; int j ; //Laufvariable 
-  char ** file_strings ; //Zeiger auf Feld von char-Zeigern 
+  int i ; //Laufvariable 1
+	int j ; //Laufvariable 2
+  char** file_strings ; //Zeiger auf Feld von char-Zeigern 
   char word[ 512 ] ; //Speicher zum Einlesen eines Strings 
-	FILE* name_file = fopen( "names_40.txt", "r" ) ;
+
+	cout << "Enter input file name , output file name , and optionally za/az: " ;
+	FILE* name_file = NULL ;
+	if ( argc > 1 ) {
+	  name_file = fopen( argv [ 1 ] , "r" ) ;
+		cout << endl << argv[ 1 ] << endl ;
+		}
+	else {
+		name_file = fopen( "names_40.txt" , "r" ) ;
+		}
 	if ( name_file == NULL) {
 		return 1 ;
     }
   while ( fgets( word , sizeof word , name_file ) ) {
 		n++ ;
     }
-  fseek(name_file, 0, SEEK_SET) ; 
+  fseek( name_file , 0 , SEEK_SET ) ; 
 	/* Speicher fuer Zeigerfeld reservieren: */
   file_strings = new( nothrow ) char*[ n ] ;
     if ( file_strings == NULL ) {
@@ -62,19 +71,32 @@ int main ( void ) {
 			}
 	/* n Strings lesen und dynamisch speichern: */
 	for ( i = 0 ; i < n ; ++i ) {
-		fgets( word , 256 , name_file) ; //max number of char to be copied = 256
+		fgets( word , 512 , name_file) ; //fgets replaces /n with /0
 		if ( ( file_strings[ i ] = new( nothrow ) char[ strlen( word ) + 1 ] ) == NULL ) {
-			cout << "Speichermangel!" << endl;
+			cout << "Speichermangel!" << endl ;
       return 1 ;
       }
-    strcpy( file_strings[ i ] , word ) ; //String umkopieren
+    strcpy( file_strings[ i ] , word ) ; //umkopieren mit "fput", open with "w"
 		}
-  bubblesort(n, file_strings ) ; /* Aufruf der Sortierfunktion: */
-	fclose( name_file ) ;
+  fclose( name_file ) ;
+	 /* Aufruf der Sortierfunktion: */
+	cout << "argc: " << argc << endl ;
+	cout << "argv[3]: " << argv[ 3 ] << endl ;
+
+	if ( argc > 3 && argv [ 3 ] [ 0 ] == 'z' ) {
+		bubblesort_za( n , file_strings ) ;
+		}
+	else if (argc > 3 && argv [ 3 ] [ 0 ] == 'a' ) {
+		bubblesort_az( n , file_strings ) ;
+		}
+	else {
+		cout << "Default-sorting A to Z." ;
+		bubblesort_az( n , file_strings ) ;
+		}
 	//write into new txt file:
-  ofstream sortedFile( "sorted.txt" ) ;
+  ofstream sortedFile( argv [ 2 ] ) ;  //fopen
   for ( j = 0 ; j < n ; ++j ) {
-		sortedFile << file_strings [ j ] ;
+		sortedFile << file_strings [ j ] ; 
     }
   sortedFile.close( ) ;
   /* Speicher freigeben: */
@@ -84,16 +106,37 @@ int main ( void ) {
   delete[ ] file_strings ;
   return 0 ;
 	}
-void bubblesort( int n , char *a[ ] ) {
+void bubblesort_za( int n , char *a[ ] ) {
 	int i , j ;
-	char *tmp ;
-	for ( i = n - 1 ; i > 0; --i ) {
+	char* tmp ;
+	int sw = 1 ; //switch to represent swopping (if 0: file sorted)
+	while ( sw == 1 ) {
+		sw = 0 ;
+		i = n - 1 ;
 		for ( j = 0 ; j < i ; ++j ) {
 			if ( strcmp( a[ j ] , a[ j + 1 ] ) < 0 ) {
+				sw = 1 ;
 				tmp = a[ j ] ;
 				a[ j ] = a[ j + 1 ] ;
 				a[ j + 1 ] = tmp ;
 				}
 			}
 		}
-	}
+	}		
+void bubblesort_az( int n , char *a[ ] ) {
+	int i , j ;
+	char* tmp ;
+	int sw = 1 ; //switch to represent swopping (if 0: file sorted)
+	while ( sw == 1 ) {
+		sw = 0 ;
+		i = n - 1 ;
+		for ( j = 0 ; j < i ; ++j ) {
+			if ( strcmp( a[ j ] , a[ j + 1 ] ) > 0 ) {
+				sw = 1 ;
+				tmp = a[ j ] ;
+				a[ j ] = a[ j + 1 ] ;
+				a[ j + 1 ] = tmp ;
+				}
+			}
+		}
+	}		

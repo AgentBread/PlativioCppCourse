@@ -12,7 +12,7 @@ Date released: 01 June 2020
 #include <sstream>
 #include <regex>
 //DEFINES
-using namespace std;
+using namespace std ;
 #define MIN_VALUE 1
 #define MAX_VALUE 3999
 //FORWARD-DECLARATIONS
@@ -36,7 +36,7 @@ int main( void ) {
 		}
 	else if ( input.find_first_not_of( "0123456789" ) != string::npos ) {
 		int output = roman_to_arabic( input ) ;
-		cout << (output > 0 ? to_string( output ) : "Invalid Input" ) << endl;
+		cout << (output > 0 ? to_string( output ) : "Invalid Input" ) << endl ;
 		}
 		/* Regex Block:
             if (regex_match(input, regex("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"))) {
@@ -50,7 +50,7 @@ int main( void ) {
      stringstream s ;
      s << input ;
      s >> number ;
-			if (number >= MIN_VALUE && number <= MAX_VALUE) {
+			if ( number >= MIN_VALUE && number <= MAX_VALUE ) {
 				cout << arabic_to_roman( number ) << endl ;
 				} 
 			else {
@@ -95,7 +95,7 @@ int roman_to_arabic( const string& roman_number ) {
   int x = 0 ; //viewpoint input
   int p = 12 ; //viewpoint rom
   int c = 0 ; //counts repetitions
-  int a = 0 ; //output
+  int a = 0 ; //output , -1 in case of error ( to replace valid bool )
   string str = roman_number.substr ( x , 1 ) ;
   while( str == rom[ p ] && a >= 0 ) { 
 		c++ ;
@@ -150,10 +150,10 @@ int roman_to_arabic( const string& roman_number ) {
 				if ( !found ) {
 					valid = p > 0 ;
 					}
-				valid = valid && x < roman_number.length( ) && a >= 0 ;
-				p -= 3 ;
-				c = 0 ;
 				}
+			valid = valid && x < roman_number.length( ) && a >= 0 ;
+			p -= 3 ;
+			c = 0 ;
 			}
 		}
 	return x == roman_number.length( ) ? a : -1 ;

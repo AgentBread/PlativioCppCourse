@@ -11,14 +11,11 @@ Date released: 01 June 2020
 #include <map>
 #include <sstream>
 #include <regex>
+#include "Aufgabe02.1\Aufgabe02.2.h"
 //DEFINES
-using namespace std ;
-#define MIN_VALUE 1
-#define MAX_VALUE 3999
+//in header file
 //FORWARD-DECLARATIONS
-string arabic_to_roman( int number ) ;
-int roman_to_arabic( const string& roman_number ) ;
-int repetitions(const string& str , int c , int a ) ;
+//in header file
 /*MAIN: 
 use: convert between arabic and roman numbers with validation not using regex function
 return: 0 = error-free, 1 = error

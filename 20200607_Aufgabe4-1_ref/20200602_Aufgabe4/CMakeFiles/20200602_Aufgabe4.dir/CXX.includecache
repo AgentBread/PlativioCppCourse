@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/hannes/Downloads/20200602_Aufgabe4/aufgabe4.cpp
+iostream
+-
+aufgabe4.h
+/Users/hannes/Downloads/20200602_Aufgabe4/aufgabe4.h
+cstdlib
+-
+list
+-
+
+/Users/hannes/Downloads/20200602_Aufgabe4/aufgabe4.h
+iostream
+-
+

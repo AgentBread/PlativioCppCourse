@@ -1,3 +1,0 @@
-/Users/hannes/Downloads/20200602_Aufgabe4/CMakeFiles/rebuild_cache.dir
-/Users/hannes/Downloads/20200602_Aufgabe4/CMakeFiles/edit_cache.dir
-/Users/hannes/Downloads/20200602_Aufgabe4/CMakeFiles/20200602_Aufgabe4.dir

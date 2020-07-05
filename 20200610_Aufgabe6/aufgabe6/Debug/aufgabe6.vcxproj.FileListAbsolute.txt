@@ -1,2 +1,0 @@
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200610_Aufgabe6\aufgabe6\Debug\aufgabe6.exe
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200610_Aufgabe6\aufgabe6\Debug\aufgabe6.pdb

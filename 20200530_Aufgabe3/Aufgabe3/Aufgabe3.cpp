@@ -53,7 +53,7 @@ int main( int argc , char* argv [ ] ) {  //dateiname + Eingabe + Aufsgabe Datei 
   cout << endl << argv[ 1 ] << endl ;
   }
   else {
-  name_file = fopen( "names_40.txt" , "r" ) ;
+    name_file = fopen( "names_40.txt" , "r" ) ;
   }
   if ( name_file == NULL) {
     return 1 ;

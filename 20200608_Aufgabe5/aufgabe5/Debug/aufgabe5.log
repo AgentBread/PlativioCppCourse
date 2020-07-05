@@ -1,9 +1,0 @@
-﻿  aufgabe5.cpp
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200608_Aufgabe5\aufgabe5\aufgabe5.cpp(38,33): error C2664: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string(const std::basic_string<char,std::char_traits<char>,std::allocator<char>> &)': cannot convert argument 1 from 'int' to 'std::initializer_list<_Elem>'
-          with
-          [
-              _Elem=char
-          ]
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200608_Aufgabe5\aufgabe5\aufgabe5.cpp(38,33): message : No constructor could take the source type, or constructor overload resolution was ambiguous
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\include\xstring(2582,5): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string'
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200608_Aufgabe5\aufgabe5\aufgabe5.cpp(34,14): error C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.

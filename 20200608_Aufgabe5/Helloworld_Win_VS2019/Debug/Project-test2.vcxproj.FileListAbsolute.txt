@@ -1,4 +1,0 @@
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200608_Aufgabe5\Project-test2\Debug\Project-test2.exe
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200608_Aufgabe5\Project-test2\Debug\Project-test2.pdb
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200608_Aufgabe5\Helloworld_Win_VS2019\Debug\Project-test2.exe
-D:\MyPrograms\myCppPrograms\PlativioCppCourse\20200608_Aufgabe5\Helloworld_Win_VS2019\Debug\Project-test2.pdb
